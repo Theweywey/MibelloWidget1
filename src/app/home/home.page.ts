@@ -5,10 +5,8 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { Preferences } from '@capacitor/preferences';
 import { Browser } from '@capacitor/browser';
 import { App } from '@capacitor/app';
-
-// --- NUEVA IMPORTACIÓN Y REGISTRO DEL PLUGIN ---
-// registerPlugin nos permite comunicar TypeScript con el código Java/Kotlin de Android
 import { registerPlugin } from '@capacitor/core';
+
 const WidgetUpdater = registerPlugin<any>('WidgetUpdater');
 
 @Component({
@@ -120,26 +118,18 @@ export class HomePage implements OnInit, AfterViewInit {
   }
 
   // --- MODIFICACIÓN DE FAVORITOS Y WIDGET ---
-  /**
-   * Guarda un juego como favorito y notifica al plugin nativo para actualizar el widget.
-   * @param game El objeto del juego seleccionado.
-   */
   async setFavorite(game: any) {
-    // Obtenemos el ID, considerando que la API de Cheapshark a veces usa gameID o gameId
     const id = game.gameID || game.gameId;
 
     if (id) {
       console.log("Guardando favorito y notificando al widget:", id);
-      // 1. Guardamos en la memoria local del dispositivo usando Capacitor Preferences
       await Preferences.set({ key: 'favoriteGame', value: id.toString() });
-      this.favoriteGameId = id.toString(); // Aseguramos que sea string para la comparación del icono
+      this.favoriteGameId = id.toString(); 
 
-      // 2. ¡LLAMADA AL PLUGIN NATIVO!
-      // Intentamos despertar al widget de Android.
+      // CAMBIADO: Enviamos el gameId al plugin
       try {
-        await WidgetUpdater.update();
+        await WidgetUpdater.update({ gameId: id.toString() }); 
       } catch (error) {
-        // Si falla (por ejemplo, en el navegador), mostramos un mensaje en consola
         console.warn("El plugin nativo solo funciona en Android", error);
       }
     }
