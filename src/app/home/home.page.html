@@ -1,0 +1,225 @@
+<ion-header class="gd-header">
+  <div class="gd-grid-bg"></div>
+  <div class="gd-scanlines"></div>
+  <ion-toolbar>
+    <div class="gd-header-top">
+      <span class="gd-logo">GAME DEALS</span>
+      <span class="gd-live-badge">● LIVE</span>
+    </div>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar
+      (ionInput)="onSearchChange($event)"
+      placeholder="SEARCH // QUERY_INPUT..."
+      class="gd-searchbar">
+    </ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="gd-content">
+  <div class="gd-particles" id="particles"></div>
+
+  <!-- SECCIÓN 1: Top Deals -->
+  <div *ngIf="!isSearching">
+    <div class="gd-section-header">
+      <span class="gd-section-label">Top 5 ofertas</span>
+      <div class="gd-section-line"></div>
+    </div>
+
+    <div *ngIf="isLoading" class="gd-loading">
+      <ion-spinner name="crescent" class="gd-spinner"></ion-spinner>
+      <p class="gd-loading-text">BUSCANDO MEJORES PRECIOS...</p>
+    </div>
+
+    <ion-list class="gd-list" *ngIf="!isLoading">
+      <ion-item
+        *ngFor="let deal of topDeals; let i = index"
+        class="gd-item"
+        [style.animation-delay]="(i * 80) + 'ms'">
+        <span class="gd-rank" [class.gd-rank--top]="i < 2" slot="start">
+          {{ (i + 1).toString().padStart(2, '0') }}
+        </span>
+        <ion-thumbnail slot="start" class="gd-thumb">
+          <img [src]="deal.thumb" />
+        </ion-thumbnail>
+        <ion-label (click)="openGameDetails(deal.gameID || deal.gameId)" class="gd-label">
+          <h2 class="gd-title">{{ deal.title }}</h2>
+          <div class="gd-price-row">
+            <span class="gd-sale">${{ deal.salePrice }}</span>
+            <span class="gd-normal">${{ deal.normalPrice }}</span>
+            <span class="gd-discount">
+              -{{ (100 - (deal.salePrice / deal.normalPrice * 100)) | number:'1.0-0' }}%
+            </span>
+          </div>
+        </ion-label>
+        <ion-button slot="end" fill="clear" class="gd-fav-btn" (click)="setFavorite(deal)">
+          <ion-icon
+            [name]="favoriteGameId === (deal.gameID || deal.gameId) ? 'heart' : 'heart-outline'"
+            [class.gd-fav--active]="favoriteGameId === (deal.gameID || deal.gameId)">
+          </ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <!-- SECCIÓN 2: Resultados de Búsqueda -->
+  <div *ngIf="isSearching">
+    <div class="gd-section-header">
+      <span class="gd-section-label">Resultados</span>
+      <div class="gd-section-line"></div>
+    </div>
+    <ion-list class="gd-list">
+      <ion-item
+        *ngFor="let game of searchResults; let i = index"
+        class="gd-item"
+        [style.animation-delay]="(i * 80) + 'ms'">
+        <ion-thumbnail slot="start" class="gd-thumb">
+          <img [src]="game.thumb" />
+        </ion-thumbnail>
+        <ion-label (click)="openGameDetails(game.gameID || game.gameId)" class="gd-label">
+          <h2 class="gd-title">{{ game.external }}</h2>
+          <div class="gd-price-row">
+            <span class="gd-sale">${{ game.cheapest }}</span>
+          </div>
+        </ion-label>
+        <ion-button slot="end" fill="clear" class="gd-fav-btn" (click)="setFavorite(game)">
+          <ion-icon
+            [name]="favoriteGameId === (game.gameID || game.gameId) ? 'heart' : 'heart-outline'"
+            [class.gd-fav--active]="favoriteGameId === (game.gameID || game.gameId)">
+          </ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <!-- ██████████████████████████████████████ -->
+  <!-- MODAL DE DETALLES DEL JUEGO           -->
+  <!-- ██████████████████████████████████████ -->
+  <ion-modal
+    [isOpen]="isModalOpen"
+    (didDismiss)="closeModal()"
+    [initialBreakpoint]="0.65"
+    [breakpoints]="[0, 0.65, 0.9]"
+    handleBehavior="cycle"
+    class="gd-modal">
+
+    <ng-template>
+
+      <!-- HEADER DEL MODAL -->
+      <ion-header class="ion-no-border gd-modal-header">
+        <div class="gd-modal-header-deco"></div>
+        <ion-toolbar>
+          <div class="gd-modal-title-row">
+            <div class="gd-modal-title-block">
+              <span class="gd-modal-eyebrow">// GAME DETAILS</span>
+              <ion-title *ngIf="selectedGameDetails" class="gd-modal-title">
+                {{ selectedGameDetails.info.title }}
+              </ion-title>
+            </div>
+            <ion-button fill="clear" (click)="closeModal()" class="gd-close-btn">
+              <span>✕ CERRAR</span>
+            </ion-button>
+          </div>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="gd-modal-content" *ngIf="selectedGameDetails">
+
+        <!-- BANNER + PRECIO HISTÓRICO -->
+        <div class="gd-modal-banner">
+          <img [src]="selectedGameDetails.info.thumb" class="gd-banner-img" />
+          <div class="gd-banner-overlay"></div>
+          <div class="gd-banner-scanlines"></div>
+          <div class="gd-banner-info">
+            <span class="gd-banner-label">PRECIO HISTÓRICO MÍN.</span>
+            <span class="gd-banner-price">${{ selectedGameDetails.cheapestPriceEver.price }}</span>
+          </div>
+          <!-- Esquinas decorativas del banner -->
+          <div class="gd-corner gd-corner--tl"></div>
+          <div class="gd-corner gd-corner--tr"></div>
+          <div class="gd-corner gd-corner--bl"></div>
+          <div class="gd-corner gd-corner--br"></div>
+        </div>
+
+        <!-- CAJA DE ALERTA DE PRECIO -->
+        <div class="gd-alert-box">
+          <div class="gd-alert-header">
+            <div class="gd-alert-dot"></div>
+            <span class="gd-alert-title">¿ESPERAR REBAJA?</span>
+            <div class="gd-alert-line"></div>
+          </div>
+          <p class="gd-alert-sub">Recibe un email cuando baje del precio objetivo</p>
+
+          <div class="gd-input-group">
+            <ion-item lines="none" class="gd-input-item">
+              <div class="gd-input-prefix">@</div>
+              <ion-input
+                type="email"
+                placeholder="EMAIL_ADDRESS"
+                [(ngModel)]="alertEmail"
+                class="gd-input">
+              </ion-input>
+            </ion-item>
+
+            <ion-item lines="none" class="gd-input-item">
+              <div class="gd-input-prefix">$</div>
+              <ion-input
+                type="number"
+                placeholder="TARGET_PRICE"
+                [(ngModel)]="alertPrice"
+                class="gd-input">
+              </ion-input>
+            </ion-item>
+          </div>
+
+          <ion-button expand="block" (click)="createAlert()" class="gd-btn-neon">
+            <span class="gd-btn-text">▶ SET_PRICE_ALERT</span>
+          </ion-button>
+        </div>
+
+        <!-- TIENDAS DISPONIBLES -->
+        <div class="gd-section-header" style="padding: 20px 16px 10px;">
+          <span class="gd-section-label">Tiendas disponibles</span>
+          <div class="gd-section-line"></div>
+        </div>
+
+        <ion-list lines="none" class="gd-modal-list">
+          <ion-item
+            *ngFor="let deal of selectedGameDetails.deals; let i = index"
+            (click)="openDealUrl(deal.dealID)"
+            class="gd-store-item"
+            [style.animation-delay]="(i * 60) + 'ms'">
+
+            <!-- Número de fila -->
+            <span class="gd-store-rank" slot="start">{{ (i + 1).toString().padStart(2,'0') }}</span>
+
+            <ion-label class="gd-store-label">
+              <h2 class="gd-store-name">{{ getStoreName(deal.storeID) }}</h2>
+              <p class="gd-store-retail">
+                Normal:
+                <span [class.gd-strike]="deal.retailPrice !== deal.price">
+                  ${{ deal.retailPrice }}
+                </span>
+              </p>
+            </ion-label>
+
+            <div slot="end" class="gd-store-end">
+              <span class="gd-store-price">${{ deal.price }}</span>
+              <div class="gd-store-arrow">
+                <ion-icon name="chevron-forward-outline"></ion-icon>
+              </div>
+            </div>
+
+          </ion-item>
+        </ion-list>
+
+        <!-- Separador final decorativo -->
+        <div class="gd-modal-footer-deco">
+          <span>// END OF DATA</span>
+        </div>
+
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+</ion-content>

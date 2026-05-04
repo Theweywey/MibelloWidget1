@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/widget_root"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@drawable/widget_bg"
+  android:padding="16dp">
+
+  <TextView
+    android:id="@+id/appwidget_text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:text="Cargando..."
+    android:textColor="#FFFFFF"
+    android:textSize="16sp"
+    android:textStyle="bold" />
+
+  <!-- SI NECESITAS UN SEPARADOR O LÍNEA: Usa ImageView en lugar de View -->
+  <ImageView
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:layout_below="@id/appwidget_text"
+    android:layout_marginTop="8dp"
+    android:background="#4000ffc8" />
+
+</RelativeLayout>

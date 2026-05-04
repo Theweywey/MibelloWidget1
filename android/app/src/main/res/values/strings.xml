@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">MyBeautifulWidgets</string>
+  <string name="title_activity_main">MyBeautifulWidgets</string>
+  <string name="package_name">io.ionic.starter</string>
+  <string name="custom_url_scheme">io.ionic.starter</string>
+  <string name="appwidget_text">EXAMPLE</string>
+  <string name="add_widget">Add widget</string>
+  <string name="app_widget_description">This is an app widget description</string>
+
+  <!-- Estas 2 son nuevas -->
+  <string name="widget_loading">Sincronizando...</string>
+  <string name="game_thumb_desc">Imagen del juego favorito</string>
+</resources>

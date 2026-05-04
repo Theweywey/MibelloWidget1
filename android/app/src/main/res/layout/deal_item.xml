@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="horizontal"
+  android:gravity="center_vertical"
+  android:background="@drawable/store_item_bg"
+  android:padding="5dp">
+
+  <LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:orientation="vertical">
+
+    <TextView
+      android:id="@+id/deal_store_name"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textColor="#e0f0ff"
+      android:textSize="10sp"
+      android:fontFamily="monospace" />
+
+    <TextView
+      android:id="@+id/deal_retail_price"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textColor="#3a4a5a"
+      android:textSize="8sp" />
+  </LinearLayout>
+
+  <TextView
+    android:id="@+id/deal_price"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textColor="#00ffc8"
+    android:textSize="14sp"
+    android:textStyle="bold"
+    android:fontFamily="monospace" />
+</LinearLayout>

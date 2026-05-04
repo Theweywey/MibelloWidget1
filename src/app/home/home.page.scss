@@ -1,0 +1,766 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+
+// ══════════════════════════════════════
+// VARIABLES
+// ══════════════════════════════════════
+$neon: #00ffc8;
+$pink: #ff2a6d;
+$bg:   #080c14;
+$text: #e0f0ff;
+
+// ══════════════════════════════════════
+// ANIMACIONES GLOBALES
+// ══════════════════════════════════════
+@keyframes logoGlow {
+  from { text-shadow: 0 0 10px rgba(0,255,200,0.5), 0 0 20px rgba(0,255,200,0.2); }
+  to   { text-shadow: 0 0 25px rgba(0,255,200,1),   0 0 50px rgba(0,255,200,0.5); }
+}
+
+@keyframes badgeBlink {
+  0%, 100% { opacity: 1;   }
+  50%       { opacity: 0.4; }
+}
+
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1;   }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: translateX(0);     }
+}
+
+@keyframes particleFloat {
+  0%   { transform: translateY(0) translateX(0);       opacity: 0;   }
+  10%  { opacity: 0.7; }
+  90%  { opacity: 0.3; }
+  100% { transform: translateY(-400px) translateX(var(--drift, 20px)); opacity: 0; }
+}
+
+// ══════════════════════════════════════
+// HEADER
+// ══════════════════════════════════════
+.gd-header {
+  position: relative;
+  --background: #{$bg};
+  --border-color: rgba(0,255,200,0.15);
+
+  ion-toolbar {
+    --background: transparent;
+    --border-color: rgba(0,255,200,0.1);
+    position: relative;
+    z-index: 2;
+  }
+}
+
+.gd-grid-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(0,255,200,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,200,0.05) 1px, transparent 1px);
+  background-size: 36px 36px;
+  animation: gridPulse 6s ease-in-out infinite;
+}
+
+.gd-scanlines {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,        transparent 2px,
+    rgba(0,0,0,0.07)    2px,
+    rgba(0,0,0,0.07)    4px
+  );
+}
+
+.gd-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+}
+
+.gd-logo {
+  font-family: 'Orbitron', monospace;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: $neon;
+  text-shadow: 0 0 20px rgba(0,255,200,0.9), 0 0 40px rgba(0,255,200,0.4);
+  animation: logoGlow 2s ease-in-out infinite alternate;
+}
+
+.gd-live-badge {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: $pink;
+  border: 1px solid $pink;
+  padding: 2px 8px;
+  text-shadow: 0 0 8px rgba(255,42,109,0.9);
+  box-shadow: 0 0 8px rgba(255,42,109,0.2);
+  animation: badgeBlink 1.5s ease-in-out infinite;
+}
+
+.gd-searchbar {
+  --background: rgba(0,255,200,0.05);
+  --border-radius: 0;
+  --box-shadow: none;
+  --color: #{$neon};
+  --placeholder-color: rgba(0,255,200,0.35);
+  --icon-color: rgba(0,255,200,0.5);
+  border: 1px solid rgba(0,255,200,0.2);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+// ══════════════════════════════════════
+// CONTENT PRINCIPAL
+// ══════════════════════════════════════
+.gd-content {
+  --background: #{$bg};
+  --color: #{$text};
+  position: relative;
+  font-family: 'Share Tech Mono', monospace;
+
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,255,200,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,200,0.03) 1px, transparent 1px);
+    background-size: 36px 36px;
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+
+// ── Partículas ──
+.gd-particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+// ── Section header compartido ──
+.gd-section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 16px 10px;
+}
+
+.gd-section-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: $pink;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px rgba(255,42,109,0.6);
+  white-space: nowrap;
+}
+
+.gd-section-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255,42,109,0.4), transparent);
+}
+
+// ══════════════════════════════════════
+// LISTA PRINCIPAL (TOP DEALS + SEARCH)
+// ══════════════════════════════════════
+.gd-list {
+  background: transparent;
+  padding: 0;
+}
+
+.gd-item {
+  --background: transparent;
+  --border-color: rgba(0,255,200,0.07);
+  --inner-border-width: 0 0 1px 0;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  padding: 0 16px;
+  position: relative;
+  cursor: pointer;
+  animation: slideIn 0.35s ease both;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: transparent;
+    transition: all 0.25s;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 3px; right: 14px;
+    width: 6px; height: 6px;
+    border-top: 1px solid rgba(0,255,200,0.2);
+    border-right: 1px solid rgba(0,255,200,0.2);
+  }
+
+  &:hover {
+    --background: rgba(0,255,200,0.03);
+  }
+
+  &:hover::before,
+  &:active::before {
+    background: $neon;
+    box-shadow: 0 0 12px rgba(0,255,200,0.8);
+  }
+}
+
+.gd-rank {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  font-weight: 900;
+  color: rgba(0,255,200,0.2);
+  min-width: 22px;
+  text-align: center;
+  padding-right: 8px;
+  padding-left: 4px;
+
+  &.gd-rank--top {
+    color: $pink;
+    text-shadow: 0 0 8px rgba(255,42,109,0.8);
+  }
+}
+
+.gd-thumb {
+  border: 1px solid rgba(0,255,200,0.2);
+  overflow: hidden;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,255,200,0.1) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  img { object-fit: cover; }
+}
+
+.gd-label { color: $text !important; }
+
+.gd-title {
+  font-family: 'Share Tech Mono', monospace !important;
+  font-size: 13px !important;
+  color: $text !important;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.gd-price-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.gd-sale {
+  font-family: 'Orbitron', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: $neon;
+  text-shadow: 0 0 10px rgba(0,255,200,0.6);
+}
+
+.gd-normal {
+  font-size: 10px;
+  color: rgba(224,240,255,0.3);
+  text-decoration: line-through;
+}
+
+.gd-discount {
+  font-family: 'Orbitron', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  color: $pink;
+  background: rgba(255,42,109,0.1);
+  border: 1px solid rgba(255,42,109,0.3);
+  padding: 1px 5px;
+  letter-spacing: 1px;
+}
+
+// ── Botón favorito ──
+.gd-fav-btn {
+  --color: rgba(224,240,255,0.2);
+
+  ion-icon {
+    font-size: 20px;
+    transition: all 0.2s;
+
+    &.gd-fav--active {
+      color: $pink !important;
+      filter: drop-shadow(0 0 6px rgba(255,42,109,0.9));
+    }
+  }
+
+  &:hover ion-icon { transform: scale(1.25); }
+}
+
+// ── Loading ──
+.gd-loading {
+  text-align: center;
+  padding: 40px 0;
+
+  .gd-spinner {
+    --color: #{$neon};
+    transform: scale(1.3);
+  }
+
+  .gd-loading-text {
+    font-family: 'Orbitron', monospace;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: rgba(0,255,200,0.5);
+    margin-top: 16px;
+    animation: badgeBlink 1s ease-in-out infinite;
+  }
+}
+
+// ══════════════════════════════════════
+// MODAL — CYBERPUNK STYLE
+// ══════════════════════════════════════
+.gd-modal {
+  --border-radius: 0px;
+  --background: transparent;
+
+  &::part(handle) {
+    background: rgba(0,255,200,0.4);
+    width: 40px;
+    box-shadow: 0 0 8px rgba(0,255,200,0.7);
+  }
+
+  &::part(content) {
+    background: $bg;
+    border-top: 1px solid rgba(0,255,200,0.25);
+    box-shadow:
+      0 -4px 30px rgba(0,255,200,0.08),
+      0 -1px  0   rgba(0,255,200,0.3);
+  }
+}
+
+// ── Header del modal ──
+.gd-modal-header {
+  position: relative;
+  background: $bg;
+
+  ion-toolbar {
+    --background: transparent;
+    --border-color: rgba(0,255,200,0.12);
+  }
+}
+
+.gd-modal-header-deco {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent               0%,
+    rgba(0,255,200,0.6)      30%,
+    rgba(0,255,200,1)        50%,
+    rgba(0,255,200,0.6)      70%,
+    transparent              100%
+  );
+  box-shadow: 0 0 12px rgba(0,255,200,0.5);
+}
+
+.gd-modal-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px 6px;
+}
+
+.gd-modal-title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.gd-modal-eyebrow {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: rgba(0,255,200,0.45);
+}
+
+.gd-modal-title {
+  font-family: 'Orbitron', monospace !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: $text !important;
+  letter-spacing: 1px;
+  text-align: left !important;
+  padding: 0 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gd-close-btn {
+  --color: rgba(255,42,109,0.7);
+  font-family: 'Orbitron', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  flex-shrink: 0;
+
+  span {
+    border: 1px solid rgba(255,42,109,0.4);
+    padding: 3px 8px;
+    transition: all 0.2s;
+  }
+
+  &:hover span, &:active span {
+    background: rgba(255,42,109,0.1);
+    border-color: rgba(255,42,109,0.8);
+    color: $pink;
+    box-shadow: 0 0 10px rgba(255,42,109,0.4);
+  }
+}
+
+// ── Contenido del modal ──
+.gd-modal-content {
+  --background: #{$bg};
+  --color: #{$text};
+  font-family: 'Share Tech Mono', monospace;
+}
+
+// ── Banner ──
+.gd-modal-banner {
+  position: relative;
+  height: 160px;
+  overflow: hidden;
+  margin: 0;
+}
+
+.gd-banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(1.2) brightness(0.7);
+  display: block;
+}
+
+.gd-banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(8,12,20,0.1)  0%,
+    rgba(8,12,20,0.6)  60%,
+    rgba(8,12,20,0.95) 100%
+  );
+}
+
+.gd-banner-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,      transparent 2px,
+    rgba(0,0,0,0.1)   2px,
+    rgba(0,0,0,0.1)   4px
+  );
+}
+
+.gd-banner-info {
+  position: absolute;
+  bottom: 12px;
+  left: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.gd-banner-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 8px;
+  letter-spacing: 3px;
+  color: rgba(0,255,200,0.6);
+}
+
+.gd-banner-price {
+  font-family: 'Orbitron', monospace;
+  font-size: 22px;
+  font-weight: 900;
+  color: $neon;
+  text-shadow:
+    0 0 20px rgba(0,255,200,0.9),
+    0 0 40px rgba(0,255,200,0.4);
+}
+
+// ── Esquinas decorativas del banner ──
+.gd-corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: rgba(0,255,200,0.6);
+  border-style: solid;
+
+  &--tl { top: 8px;    left: 8px;   border-width: 1px 0 0 1px; }
+  &--tr { top: 8px;    right: 8px;  border-width: 1px 1px 0 0; }
+  &--bl { bottom: 8px; left: 8px;   border-width: 0 0 1px 1px; }
+  &--br { bottom: 8px; right: 8px;  border-width: 0 1px 1px 0; }
+}
+
+// ── Caja de alerta de precio ──
+.gd-alert-box {
+  margin: 16px;
+  padding: 16px;
+  background: rgba(0,255,200,0.03);
+  border: 1px solid rgba(0,255,200,0.15);
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -1px; right: 20px;
+    width: 30px; height: 1px;
+    background: $neon;
+    box-shadow: 0 0 8px rgba(0,255,200,0.8);
+  }
+}
+
+.gd-alert-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.gd-alert-dot {
+  width: 6px;
+  height: 6px;
+  background: $pink;
+  box-shadow: 0 0 8px rgba(255,42,109,0.9);
+  flex-shrink: 0;
+  animation: badgeBlink 1.2s ease-in-out infinite;
+}
+
+.gd-alert-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: $text;
+}
+
+.gd-alert-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(0,255,200,0.3), transparent);
+}
+
+.gd-alert-sub {
+  font-size: 10px;
+  color: rgba(224,240,255,0.35);
+  letter-spacing: 0.5px;
+  margin-bottom: 14px;
+}
+
+.gd-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.gd-input-item {
+  --background: rgba(0,0,0,0.4);
+  --border-radius: 0;
+  --inner-padding-end: 0;
+  --padding-start: 0;
+  border: 1px solid rgba(0,255,200,0.15);
+  transition: border-color 0.2s;
+  display: flex;
+  align-items: center;
+
+  &:focus-within {
+    border-color: rgba(0,255,200,0.5);
+    box-shadow: 0 0 10px rgba(0,255,200,0.1);
+  }
+}
+
+.gd-input-prefix {
+  font-family: 'Orbitron', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(0,255,200,0.5);
+  padding: 0 12px;
+  border-right: 1px solid rgba(0,255,200,0.12);
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.gd-input {
+  --color: #{$neon};
+  --placeholder-color: rgba(0,255,200,0.25);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+// ── Botón neon ──
+.gd-btn-neon {
+  --background: transparent;
+  --background-activated: rgba(0,255,200,0.1);
+  --background-hover: rgba(0,255,200,0.08);
+  --border-radius: 0;
+  --color: #{$neon};
+  --box-shadow: none;
+  border: 1px solid rgba(0,255,200,0.4);
+  box-shadow: 0 0 15px rgba(0,255,200,0.1), inset 0 0 15px rgba(0,255,200,0.03);
+  transition: all 0.25s;
+
+  &:hover, &:active {
+    border-color: $neon;
+    box-shadow:
+      0 0 25px rgba(0,255,200,0.3),
+      inset 0 0 20px rgba(0,255,200,0.08);
+  }
+}
+
+.gd-btn-text {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-shadow: 0 0 10px rgba(0,255,200,0.8);
+}
+
+// ── Lista de tiendas ──
+.gd-modal-list {
+  background: transparent;
+  padding: 0 0 10px;
+}
+
+.gd-store-item {
+  --background: transparent;
+  --inner-padding-end: 0;
+  --padding-start: 0;
+  padding: 0 16px;
+  border-bottom: 1px solid rgba(0,255,200,0.06);
+  cursor: pointer;
+  position: relative;
+  animation: slideIn 0.3s ease both;
+  transition: background 0.2s;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: transparent;
+    transition: all 0.2s;
+  }
+
+  &:hover, &:active {
+    --background: rgba(0,255,200,0.03);
+
+    &::before {
+      background: $neon;
+      box-shadow: 0 0 10px rgba(0,255,200,0.7);
+    }
+
+    .gd-store-arrow {
+      border-color: rgba(0,255,200,0.6);
+      color: $neon;
+    }
+
+    .gd-store-price {
+      text-shadow: 0 0 15px rgba(0,255,200,0.9);
+    }
+  }
+}
+
+.gd-store-rank {
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  font-weight: 900;
+  color: rgba(0,255,200,0.2);
+  min-width: 24px;
+  padding-right: 10px;
+  padding-left: 4px;
+}
+
+.gd-store-label {
+  padding: 12px 0;
+}
+
+.gd-store-name {
+  font-family: 'Share Tech Mono', monospace !important;
+  font-size: 13px !important;
+  color: $text !important;
+  letter-spacing: 0.5px;
+  margin-bottom: 3px;
+}
+
+.gd-store-retail {
+  font-size: 10px !important;
+  color: rgba(224,240,255,0.3) !important;
+
+  .gd-strike { text-decoration: line-through; }
+}
+
+.gd-store-end {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.gd-store-price {
+  font-family: 'Orbitron', monospace;
+  font-size: 15px;
+  font-weight: 700;
+  color: $neon;
+  text-shadow: 0 0 10px rgba(0,255,200,0.5);
+  transition: text-shadow 0.2s;
+}
+
+.gd-store-arrow {
+  width: 24px;
+  height: 24px;
+  border: 1px solid rgba(0,255,200,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0,255,200,0.4);
+  font-size: 12px;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+// ── Footer decorativo del modal ──
+.gd-modal-footer-deco {
+  text-align: center;
+  padding: 20px 16px 40px;
+
+  span {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 4px;
+    color: rgba(0,255,200,0.15);
+  }
+}

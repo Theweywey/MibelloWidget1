@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/widget_root"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  android:background="@drawable/widget_bg"
+  android:padding="12dp">
+
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+      android:id="@+id/widget_game_thumb"
+      android:layout_width="50dp"
+      android:layout_height="50dp"
+      android:scaleType="centerCrop"
+      android:background="#2A2A2A" />
+
+    <TextView
+      android:id="@+id/widget_game_title"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_toEndOf="@id/widget_game_thumb"
+      android:layout_marginStart="10dp"
+      android:text="Cargando..."
+      android:textColor="#FFFFFF"
+      android:textSize="14sp"
+      android:textStyle="bold"
+      android:ellipsize="end"
+      android:maxLines="2" />
+  </RelativeLayout>
+
+  <ViewFlipper
+    android:id="@+id/widget_store_flipper"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:autoStart="true"
+    android:flipInterval="4000"
+    android:layout_marginTop="8dp" />
+
+</LinearLayout>
